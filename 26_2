@@ -1,0 +1,37 @@
+f=open("26_2.txt") #открыли файл
+n,q=map(int,f.readline().split()) #считали количество заявок и тренажёров
+a=[] #список для всех заявок
+train=[[0,0] for i in range(q)] #список для всех тренажеров
+
+for i in range(n): #цикл, который считает все строчки и добавит их в список a
+    start,time,lvl=map(int,f.readline().split())
+    a.append([start,time,lvl])
+a.sort() #сортируем по возрастанию, чтобы сначала обрабатывать самые ранние заявки
+
+count=0 #счётчик обработанных заявок
+for start,time,lvl in a: #цикл, который пройдёт по всем заявкам
+    
+    flag=False #флаг, который позволит отслеживать состояние заявки, обработана или нет
+    
+    for z in range(q): #цикл, который просматривает все свободные тренажеры
+        if start>train[z][0]: #проверка тренажера, свободен или нет
+            train[z][0]=start+time
+            train[z][1]=lvl
+            count+=1
+            flag=True
+            break
+        
+    if flag==False:
+        for z in range(q): #проверка приоритетности абонемента
+            if lvl>train[z][1]:
+                train[z][0]=start+time
+                train[z][1]=lvl
+                count+=1
+                break
+            
+print(max(train)[0],count) #вывод ответа
+
+
+
+            
+    
